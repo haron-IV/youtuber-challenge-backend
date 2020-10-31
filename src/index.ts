@@ -1,3 +1,4 @@
+require('dotenv').config()
 import express from 'express'
 import { json } from 'body-parser'
 import mongoose from 'mongoose'
@@ -16,7 +17,7 @@ mongoose.connect('mongodb://localhost:27017/youtuber-challenge', {
   console.log('Database connected.')
 })
 
-const port: String = '8080'
+const port: String | undefined = process.env.API_PORT
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
