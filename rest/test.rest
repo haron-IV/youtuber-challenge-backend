@@ -1,0 +1,11 @@
+GET http://localhost:8080/api/test
+
+###
+
+POST http://localhost:8080/api/test
+Content-Type: application/json
+
+{
+  "title": "Test",
+  "description": "Test desc"
+}
