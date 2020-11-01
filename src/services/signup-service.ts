@@ -16,7 +16,7 @@ const passwordsAreSame = (data: passwordsAreSameInterface): Boolean => {
   return true
 }
 
-const saveSingup = (data: saveSignupInreface) => {
+const saveSignup = (data: saveSignupInreface): void => {
   const { username, email, hashedPassword, res } = data
 
   const signup = new Signup({
@@ -41,7 +41,7 @@ const saveSingup = (data: saveSignupInreface) => {
 }
 
 const signupUser = async (signupUser: signupUserInreface) => {
-  const { username, email, password, retypedPassword, res } = signupUser
+  const { username, email, password, res } = signupUser
 
   hash(password, 5, async (err, hashedPassword) => {
     if(err){
@@ -49,7 +49,7 @@ const signupUser = async (signupUser: signupUserInreface) => {
         error: err
       })
     } else {
-      saveSingup({username, email, hashedPassword, res})
+      saveSignup({username, email, hashedPassword, res})
     }
   })
 }
