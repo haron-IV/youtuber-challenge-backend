@@ -1,5 +1,6 @@
 import { hash } from 'bcrypt'
-import { Signup } from '../models/signup-user-model'
+// import { Signup } from '../models/signup-user-model'
+import { User } from '../models/user-model'
 import { logger } from '../application/logger'
 import { passwordsAreSameInterface, signupUserInreface, saveSignupInreface } from '../interfaces/services/signup-interface'
 
@@ -19,14 +20,14 @@ const passwordsAreSame = (data: passwordsAreSameInterface): Boolean => {
 const saveSignup = (data: saveSignupInreface): void => {
   const { username, email, hashedPassword, res } = data
 
-  const signup = new Signup({
+  const user = new User({
     username,
     email,
     password: hashedPassword,
     signupDate: new Date
   })
 
-  signup
+  user
   .save()
   .then( (): void => {
     logger.info(`User ${username} signed up.`)
