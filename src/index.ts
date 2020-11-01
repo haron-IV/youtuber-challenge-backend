@@ -1,24 +1,13 @@
 require('dotenv').config()
 import express from 'express'
 import { json } from 'body-parser'
-import mongoose from 'mongoose'
-
-import { testRouter } from './routes/test-route'
+import { connectDatabase } from './application/database'
+import { server } from './application/server'
+import { registerAppRoutes } from './application/register-routes'
 
 const app = express()
 app.use(json())
-app.use(testRouter)
+registerAppRoutes(app)
 
-mongoose.connect('mongodb://localhost:27017/youtuber-challenge', {
-  useCreateIndex: true,
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}, () => {
-  console.log('Database connected.')
-})
-
-const port: String | undefined = process.env.API_PORT
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-})
+connectDatabase();
+server(app);
