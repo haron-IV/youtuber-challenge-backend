@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { logger } from '../application/logger'
 
 const { DB_URL, DB_NAME } = process.env
 
@@ -10,7 +11,7 @@ interface connectionConfig {
 
 const connect = (config: connectionConfig): void => {
   mongoose.connect(`${DB_URL}${DB_NAME}`, config, () => {
-    console.log('Database connected.')
+    logger.info(`Database '${DB_NAME}' connected.`)
   })
 }
 
