@@ -3,11 +3,11 @@ const router = exporess.Router()
 
 import { Test } from '../models/test'
 
-router.get('/api/test', (req: Request, res: Response) => {
+router.get('/', (req: Request, res: Response) => {
   return res.send('works')
 })
 
-router.post('/api/test', async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
   const {title, description} = req.body
   console.log(req);
   
