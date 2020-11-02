@@ -6,3 +6,4 @@ technologies:
 * mongoose
 * mongodb
 * dotenv
+* winston
