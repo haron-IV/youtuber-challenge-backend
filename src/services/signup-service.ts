@@ -17,11 +17,10 @@ const passwordsAreSame = (data: passwordsAreSameInterface): Boolean => {
 }
 
 const saveUser = async (data: saveSignupInreface) => {
-  const { username, email, hashedPassword, res } = data
+  const { email, hashedPassword, res } = data
 
-  if (!await checkIfduplicated(username, email)) {
+  if (!await checkIfEmailExist(email)) {
     const user = new User({
-      username,
       email,
       password: hashedPassword,
       signupDate: new Date
@@ -30,7 +29,7 @@ const saveUser = async (data: saveSignupInreface) => {
     await user
     .save()
     .then( (): void => {
-      logger.info(`User ${username} signed up.`)
+      logger.info(`User ${email} signed up.`)
       res.status(201).json({
         message: 'User signed up.'
       })
@@ -42,11 +41,6 @@ const saveUser = async (data: saveSignupInreface) => {
   } else {
     res.status(500).json({message: "Email or username was used already"})
   }
-}
-
-const checkIfduplicated = async (username: string, email: string) => {
-  if (await checkIfUsernameExist(username) || await checkIfEmailExist(email)) return true
-  return false
 }
 
 const checkIfUsernameExist = async (username: String) => {
@@ -72,7 +66,7 @@ const checkIfEmailExist = async (email: string) => {
 }
 
 const signupUser = async (signupUser: signupUserInreface) => {
-  const { username, email, password, res } = signupUser
+  const { email, password, res } = signupUser
 
   hash(password, 5, async (err, hashedPassword) => {
     if(err){
@@ -80,7 +74,7 @@ const signupUser = async (signupUser: signupUserInreface) => {
         error: err
       })
     } else {
-      saveUser({username, email, hashedPassword, res})
+      saveUser({ email, hashedPassword, res })
     }
   })
 }

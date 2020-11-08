@@ -7,7 +7,6 @@ interface passwordsAreSameInterface {
 }
 
 interface signupUserInreface {
-  username: string,
   email: string,
   password: string,
   retypedPassword: string,
@@ -15,7 +14,6 @@ interface signupUserInreface {
 }
 
 interface saveSignupInreface {
-  username: string,
   email: string,
   hashedPassword: string,
   res: Response
