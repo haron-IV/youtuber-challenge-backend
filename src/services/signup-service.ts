@@ -78,7 +78,7 @@ const checkIfEmailExist = async (email: string) => {
 const signupUser = async (signupUser: signupUserInreface) => {
   const { email, password, res } = signupUser
 
-  hash(password, 5, async (err, hashedPassword) => {
+  hash(password, 10, async (err, hashedPassword) => {
     if(err){
       return res.status(500).json({
         error: err
