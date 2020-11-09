@@ -3,6 +3,7 @@ import { User } from '../models/user-model'
 import { logger } from '../application/logger'
 import { sendMail } from '../services/mailer-service'
 import { generateConfirmationCode } from '../services/helpers/random-number'
+import { notAllowedUsernames } from '../config/not-allowed-usernames'
 import { passwordsAreSameInterface, signupUserInreface, saveSignupInreface } from '../interfaces/services/signup-interface'
 
 const passwordsAreSame = (data: passwordsAreSameInterface): Boolean => {
@@ -89,15 +90,36 @@ const signupUser = async (signupUser: signupUserInreface) => {
 }
 
 const setUsername = async (email: string, username: string) => {
-  await User.update({email}, {username}).then(res => {
-    logger.info('Username settled.')
-  }).catch(err => { 
-    logger.error(err) 
-  })
+  //TODO: checking this not workin
+  if (checkIfUsernameIsAllowed(username)) {
+    await User.update({email}, {username}).then(res => {
+      logger.info('Username settled.')
+      res.status(201).json(true)
+    }).catch(err => { 
+      logger.error(err) 
+    })
+  } else {
+    logger.info(`Cannot set this username: ${username}`)
+  }
+
 }
 
 const getVerificationCode = async (email:string | undefined) => {
   return await User.find({ email }, 'confirmationCode')
+}
+
+const checkIfUsernameNotExistOnNotAllowedUsernamesList = (username: string): boolean => {
+  if(notAllowedUsernames.indexOf(username) !== -1) {
+    return false
+  }
+  return true
+}
+
+const checkIfUsernameIsAllowed = (username: string): boolean => {
+  if (checkIfUsernameExist(username) && checkIfUsernameNotExistOnNotAllowedUsernamesList(username)) {
+    return true
+  }
+  return false
 }
 
 export { passwordsAreSame, signupUser, getVerificationCode, setUsername }

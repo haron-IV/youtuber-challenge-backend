@@ -18,7 +18,7 @@ router.get('/confirmation-code', async (req: Request, res: Response) => {
 
 router.patch('/set-username', async (req: Request, res: Response) => {
   const { username, email } = req.body
-  // TODO: add checking not allowed nicknames
+  
   await setUsername(email, username).then(() => {
     res.status(201).json({username, email})
   })
