@@ -90,8 +90,8 @@ const signupUser = async (signupUser: signupUserInreface) => {
 }
 
 const setUsername = async (email: string, username: string) => {
-  //TODO: checking this not workin
-  if (checkIfUsernameIsAllowed(username)) {
+  //TODO: checking this not working
+  if (await checkIfUsernameIsAllowed(username)) {
     await User.update({email}, {username}).then(res => {
       logger.info('Username settled.')
       res.status(201).json(true)
@@ -100,6 +100,9 @@ const setUsername = async (email: string, username: string) => {
     })
   } else {
     logger.info(`Cannot set this username: ${username}`)
+    return new Promise((resolve, reject) => {
+      resolve({msg: `Cannot use this username: ${username} Please choose another one.`, status: 500})
+    })
   }
 
 }
@@ -108,15 +111,16 @@ const getVerificationCode = async (email:string | undefined) => {
   return await User.find({ email }, 'confirmationCode')
 }
 
-const checkIfUsernameNotExistOnNotAllowedUsernamesList = (username: string): boolean => {
-  if(notAllowedUsernames.indexOf(username) !== -1) {
+const checkIfUsernameExistOnNotAllowedUsernamesList = (username: string): boolean => {
+  const usernames = notAllowedUsernames
+  if(usernames.indexOf(username) !== -1) {
     return false
   }
   return true
 }
 
-const checkIfUsernameIsAllowed = (username: string): boolean => {
-  if (checkIfUsernameExist(username) && checkIfUsernameNotExistOnNotAllowedUsernamesList(username)) {
+const checkIfUsernameIsAllowed = async (username: string) => {
+  if (!await checkIfUsernameExist(username) && !checkIfUsernameExistOnNotAllowedUsernamesList(username)) {
     return true
   }
   return false

@@ -18,8 +18,11 @@ router.get('/confirmation-code', async (req: Request, res: Response) => {
 
 router.patch('/set-username', async (req: Request, res: Response) => {
   const { username, email } = req.body
-  
-  await setUsername(email, username).then(() => {
+
+  await setUsername(email, username).then((msg: any) => {
+    if (msg?.status === 500) {
+      return res.status(500).json(msg)
+    }
     res.status(201).json({username, email})
   })
 })
