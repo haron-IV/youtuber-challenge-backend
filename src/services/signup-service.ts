@@ -90,7 +90,6 @@ const signupUser = async (signupUser: signupUserInreface) => {
 }
 
 const setUsername = async (email: string, username: string) => {
-  //TODO: checking this not working
   if (await checkIfUsernameIsAllowed(username)) {
     await User.update({email}, {username}).then(res => {
       logger.info('Username settled.')
@@ -104,12 +103,9 @@ const setUsername = async (email: string, username: string) => {
       resolve({msg: `Cannot use this username: ${username} Please choose another one.`, status: 500})
     })
   }
-
 }
 
-const getVerificationCode = async (email:string | undefined) => {
-  return await User.find({ email }, 'confirmationCode')
-}
+const getVerificationCode = async (email:string | undefined) => await User.find({ email }, 'confirmationCode')
 
 const checkIfUsernameExistOnNotAllowedUsernamesList = (username: string): boolean => {
   const usernames = notAllowedUsernames
