@@ -48,7 +48,7 @@ const saveUser = async (data: saveSignupInreface) => {
       })
     })
   } else {
-    res.status(500).json({message: "Email or username was used already"})
+    res.status(500).json({ message: "Email was used already" })
   }
 }
 

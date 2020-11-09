@@ -11,7 +11,7 @@ router.post('/', (req: Request, res: Response, next: NextFunction) => {
 })
 
 router.get('/confirmation-code', (req: Request, res: Response) => {
-  const { email } = req.body
+  const { email } = req.params
   
   res.status(200).json(getVerificationCode(email))
 })
