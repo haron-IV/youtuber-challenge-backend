@@ -88,8 +88,16 @@ const signupUser = async (signupUser: signupUserInreface) => {
   })
 }
 
-const getVerificationCode = async (email: string) => {
-  return await User.find({email})
+const setUsername = async (email: string, username: string) => {
+  await User.update({email}, {username}).then(res => {
+    logger.info('Username settled.')
+  }).catch(err => { 
+    logger.error(err) 
+  })
 }
 
-export { passwordsAreSame, signupUser, getVerificationCode }
+const getVerificationCode = async (email:string | undefined) => {
+  return await User.find({ email })
+}
+
+export { passwordsAreSame, signupUser, getVerificationCode, setUsername }
