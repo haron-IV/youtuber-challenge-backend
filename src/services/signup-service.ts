@@ -97,7 +97,7 @@ const setUsername = async (email: string, username: string) => {
 }
 
 const getVerificationCode = async (email:string | undefined) => {
-  return await User.find({ email })
+  return await User.find({ email }, 'confirmationCode')
 }
 
 export { passwordsAreSame, signupUser, getVerificationCode, setUsername }

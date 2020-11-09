@@ -16,12 +16,11 @@ router.get('/confirmation-code', async (req: Request, res: Response) => {
   res.status(200).json(await getVerificationCode(email.value))
 })
 
-
 router.patch('/set-username', async (req: Request, res: Response) => {
   const { username, email } = req.body
-
-  await setUsername(email, username).then(user => {
-    res.status(201).json(user)
+  // TODO: add checking not allowed nicknames
+  await setUsername(email, username).then(() => {
+    res.status(201).json({username, email})
   })
 })
 export { router as signupRouter }
