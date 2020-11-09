@@ -1,6 +1,8 @@
 import { hash } from 'bcrypt'
 import { User } from '../models/user-model'
 import { logger } from '../application/logger'
+import { sendMail } from '../services/mailer-service'
+import { generateConfirmationCode } from '../services/helpers/random-number'
 import { passwordsAreSameInterface, signupUserInreface, saveSignupInreface } from '../interfaces/services/signup-interface'
 
 const passwordsAreSame = (data: passwordsAreSameInterface): Boolean => {
@@ -20,16 +22,23 @@ const saveUser = async (data: saveSignupInreface) => {
   const { email, hashedPassword, res } = data
 
   if (!await checkIfEmailExist(email)) {
+    const confirmationCode = generateConfirmationCode()
     const user = new User({
       email,
       password: hashedPassword,
-      signupDate: new Date
+      signupDate: new Date,
+      confirmationCode
     })
   
     await user
     .save()
     .then( (): void => {
       logger.info(`User ${email} signed up.`)
+      sendMail({
+        to: email,
+        subject: 'Youtuber challenge account verification',
+        message: `Hello. Next step is veryfication account. Retype this code in application: ${confirmationCode}`
+      })
       res.status(201).json({
         message: 'User signed up.'
       })
@@ -79,4 +88,8 @@ const signupUser = async (signupUser: signupUserInreface) => {
   })
 }
 
-export { passwordsAreSame, signupUser }
+const getVerificationCode = async (email: string) => {
+  return await User.find({email})
+}
+
+export { passwordsAreSame, signupUser, getVerificationCode }

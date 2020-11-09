@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import { generateConfirmationCode } from '../services/helpers/random-number'
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -27,7 +26,7 @@ const userSchema = new mongoose.Schema({
   },
   confirmationCode: {
     type: String,
-    default: generateConfirmationCode()
+    required: true
   },
   avatar: {
     type: String
