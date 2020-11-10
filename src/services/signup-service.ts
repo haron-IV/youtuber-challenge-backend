@@ -12,7 +12,7 @@ const passwordsAreSame = (data: passwordsAreSameInterface): Boolean => {
   if (password1 !== password2) {
     logger.error('Passwords are not the same')
     res.status(500).json({
-      error: "passwords should be same."
+      error: "Passwords are not the same."
     })
     return false
   }
@@ -49,7 +49,7 @@ const saveUser = async (data: saveSignupInreface) => {
       })
     })
   } else {
-    res.status(500).json({ message: "Email was used already" })
+    res.status(500).json({ error: "Email was used already" })
   }
 }
 
@@ -99,8 +99,8 @@ const setUsername = async (email: string, username: string) => {
     })
   } else {
     logger.info(`Cannot set this username: ${username}`)
-    return new Promise((resolve, reject) => {
-      resolve({msg: `Cannot use this username: ${username} Please choose another one.`, status: 500})
+    return new Promise((resolve) => {
+      resolve({msg: `Cannot use this username. Please choose another one.`, status: 500})
     })
   }
 }
