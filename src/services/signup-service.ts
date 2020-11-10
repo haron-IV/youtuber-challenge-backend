@@ -112,11 +112,12 @@ const checkIfUsernameExistOnNotAllowedUsernamesList = (username: string): boolea
   if(usernames.indexOf(username) !== -1) {
     return false
   }
+  logger.info(`${username} cannot be used cuz it is on not allowed nicknames list`)
   return true
 }
 
 const checkIfUsernameIsAllowed = async (username: string) => {
-  if (!await checkIfUsernameExist(username) && !checkIfUsernameExistOnNotAllowedUsernamesList(username)) {
+  if (!await checkIfUsernameExist(username) && checkIfUsernameExistOnNotAllowedUsernamesList(username)) {
     return true
   }
   return false
