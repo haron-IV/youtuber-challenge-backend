@@ -92,7 +92,6 @@ const setUsername = async (email: string, username: string): Promise<Response | 
   } else {
     logger.info(`Cannot set this username: ${username}`)
     return new Promise((resolve) => {
-      // {msg: ``, status: 500}
       resolve(errObj('Cannot use this username. Please choose another one.'))
     })
   }
