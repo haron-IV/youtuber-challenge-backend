@@ -1,11 +1,11 @@
 import mongoose from 'mongoose'
-import { generateConfirmationCode } from '../services/helpers/random-number'
 
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: false,
-    unique: true
+    unique: true,
+    sparse: true
   },
   email: {
     type: String,
@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
   },
   confirmationCode: {
     type: String,
-    default: generateConfirmationCode()
+    required: true
   },
   avatar: {
     type: String
