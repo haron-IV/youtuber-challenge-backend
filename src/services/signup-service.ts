@@ -4,6 +4,7 @@ import { logger } from '../application/logger'
 import { sendMail } from '../services/mailer-service'
 import { generateConfirmationCode } from '../services/helpers/random-number'
 import { notAllowedUsernames } from '../config/not-allowed-usernames'
+import { errObj } from './helpers/errors'
 import { passwordsAreSameInterface, signupUserInreface, saveSignupInreface } from '../interfaces/services/signup-interface'
 
 const passwordsAreSame = (data: passwordsAreSameInterface): Boolean => {
@@ -11,9 +12,7 @@ const passwordsAreSame = (data: passwordsAreSameInterface): Boolean => {
   
   if (password1 !== password2) {
     logger.error('Passwords are not the same')
-    res.status(500).json({
-      error: "Passwords are not the same."
-    })
+    res.status(500).json(errObj('Passwords are not the same.'))
     return false
   }
   return true
@@ -93,7 +92,8 @@ const setUsername = async (email: string, username: string): Promise<Response | 
   } else {
     logger.info(`Cannot set this username: ${username}`)
     return new Promise((resolve) => {
-      resolve({msg: `Cannot use this username. Please choose another one.`, status: 500})
+      // {msg: ``, status: 500}
+      resolve(errObj('Cannot use this username. Please choose another one.'))
     })
   }
 }

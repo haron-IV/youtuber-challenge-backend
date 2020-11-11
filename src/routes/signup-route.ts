@@ -20,8 +20,8 @@ router.patch('/set-username', async (req: Request, res: Response): Promise<any> 
   const { username, email } = req.body
 
   await setUsername(email, username).then((msg: any) => {
-    if (msg?.status === 500) {
-      return res.status(500).send(msg)
+    if (msg?.err) {
+      return res.status(500).json(msg)
     }
     res.status(201).json({username, email})
   })
